@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <form action="/addMySong/" method="get" enctype="multipart/form-data">
+        <div class="form-group">
+            <input class="form-control" type="text" name="song_title" placeholder="The Song title">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="file_type" placeholder="The file_type of the song">
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="add to songs">
+        </div>
+    </form>
+</body>
+</html>

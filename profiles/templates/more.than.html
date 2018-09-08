@@ -1,0 +1,285 @@
+
+from django.shortcuts import render,redirect,get_object_or_404
+from profiles.models import Album,Song
+
+
+# Create your views here.
+def home(request):
+	return render(request,'index.html')
+
+def about(request):
+	return render(request,'about.html')
+
+def albums(request):
+	albums = Album.objects.all()
+	return render(request,'albums.html',{ 'albums':albums})
+
+def songs(request):
+	songs = Song.objects.all()
+	return render(request,'songs.html',{ 'songs':songs})
+
+
+
+#ndio hii io io view
+def newalbum(request):
+	return render(request,'addalbum.html')
+
+
+
+def addalbum(request):
+	artist = request.GET['artist']
+	album_title = request.GET['album_title']
+	genre = request.GET['genre']
+	album_logo = request.GET['album_logo']
+	album = Album.objects.create(
+		artist =artist,
+		genre = genre,
+		album_logo = album_logo,
+		album_title = album_title 
+		)
+	album.save()
+	return redirect('albums')
+
+def newsong(request,pk):
+	return render(request,'newsong.html')
+
+
+def addsong(request,pk):
+	album = get_object_or_404(Album,pk=pk)
+	song_type = request.GET['song_type']
+	song_title = request.GET['song_title']
+	song = Song.objects.create(
+		album = album,
+		song_type = song_type,
+		song_title = song_title
+		)
+	song.save()
+	redirect('albumflani',pk=pk)
+	return render(request,'newsong.html')
+
+def albumflani(request,pk):
+	#album = get_object_or_404(Album,pk=pk)
+	#producer = get_object_or_404(Producer,pk=pk)
+	#actors = Actor.objects.select_related().filter(programme = programme_id)
+	album = Album.objects.get(id=pk)
+	songs = Song.objects.select_related().filter(album_id=pk)
+	return render(request,'albumflani.html',{'album':album,'songs':songs})
+
+
+
+    from django.urls import path
+from django.contrib import admin
+
+from profiles import views
+
+urlpatterns = [
+    path('albums/',            views.albums,       name='albums'),
+    path('songs/',             views.songs,        name='songs'),
+    path('newalbum/',          views.newalbum,     name='newalbum'),
+    path('addsong/',           views.addsong,      name='addsong'),
+    path('newsong/',           views.newsong,      name='newsong'),
+    path('albumflani/<int:pk>/',views.albumflani,   name= 'albumflani'),
+    #path('albumflani/<int:pk>/',views.albumflanisongs,   name= 'albumflanisongs')
+]
+
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS':[os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Sell and Buy</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <!-- Page Content -->
+    <div class="container">
+
+      <!-- Jumbotron Header -->
+      <header class="jumbotron my-6" style="min-height: 50px; ">
+        <div class="text-center">
+        <h1 class="display-3">A Warm Welcome!</h1>
+        <p class="lead"></p>
+        <a href="#" class="btn btn-primary btn-lg ">karibuni</a>
+        </div>
+      </header>
+
+      <!-- Page Features -->
+      <div class="row text-center">
+
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card">
+            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+            <div class="card-body">
+              <h4 class="card-title">Striped Merlin</h4>
+              <p class="card-text">Description about Striped Merlin.</p>
+            </div>
+            <!--<div class="card-footer">
+              <a href="#" class="btn btn-primary">Find Out More!</a>
+            </div>-->
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card">
+            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+            <div class="card-body">
+              <h4 class="card-title">Blue malin</h4>
+              <p class="card-text">More about Blue malin</p>
+            </div>
+            <!--<div class="card-footer">
+              <a href="#" class="btn btn-primary">Find Out More!</a>
+            </div>-->
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card">
+            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+            <div class="card-body">
+              <h4 class="card-title">Tilapia</h4>
+              <p class="card-text">More about Tilapia</p>
+            </div>
+            <!--<div class="card-footer">
+              <a href="#" class="btn btn-primary">Find Out More!</a>
+            </div>-->
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card">
+            <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+            <div class="card-body">
+              <h4 class="card-title">Yellow fin Tuna</h4>
+              <p class="card-text">Describing Yellow fin Tuna</p>
+            </div>
+            <!--<div class="card-footer">
+              <a href="#" class="btn btn-primary">Find Out More!</a>
+            </div>-->
+          </div>
+        </div>
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-…"
+    
+<!DOCTYPE html>
+<html lang="en">
+    <title>introduction </title>
+
+<body style="text-align: center; margin-top: 100px;">
+
+	<form action="/add/" method="get" enctype="multiple/format-data">
+
+             <!-- put the name of the album -->
+          <div class="form-group">
+            <input class="form-control" name="artist" placeholder="Your Artist Name">
+           </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+           <!-- put the name of the album title-->
+           <div class="form-group">
+            <input  class="form-control" name="album_title" placeholder="Your Album  title">
+           </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+           <div class="form-group">
+            <input  class="form-control" name="genre" placeholder="Your Album genre">
+           </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+           <div class="form-group">
+            <input  class="form-control" name="album_logo" placeholder="Add your album logo">
+           </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Add to Albums">
+         </div>
+    </form>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <title>introduction </title>
+
+<body style="text-align: center; margin-top: 100px;">
+ <h1>You are in <i>{{ album.album_title }}</i> album</h1>
+ <h3>Add a new <a href="{% url 'newsong' album.pk %}">song</a></h3>
+ {% for song in songs %}
+   	{{ song.song_title }} <br>&nbsp;&nbsp;&nbsp;&nbsp;
+  {%  endfor %}
+</body>
+</html>
+
+
+
+{% for album in albums %}
+{{ album.album_title }}<br><br><br><br>
+{% endfor %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <title>introduction </title>
+
+<body style="text-align: center; margin-top: 100px;">
+	<form action="/addsong/" method="get" enctype="multiple/format-data">
+
+           <!-- put the name of the album title-->
+           <div class="form-group">
+            <input  class="form-control" name="song_type" placeholder="Your song type">
+           </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+           <div class="form-group">
+            <input  class="form-control" name="song_title" placeholder="Your song title">
+           </div>&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Add to Songs">
+         </div>
+    </form>
+</body>
+</html>
+
+
+{% for song in songs %}
+  {{ song.album }}<br>
+  {%  endfor %}

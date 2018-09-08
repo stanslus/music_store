@@ -19,8 +19,12 @@ from django.urls import path
 from profiles import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
+    path('home/', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('index/', views.index, name='index'),
-    path('song/', views.song, name='song')
+    path('', views.song, name='song'),
+    path('newAlbum/', views.newAlbum, name='newAlbum'),
+    path('addAlbum/',views.addAlbum, name='addAlbum'),
+    path('newSong/', views.newSong, name='newSong'),
+    path('addSong/',views.addSong, name='addSong')
 ]
